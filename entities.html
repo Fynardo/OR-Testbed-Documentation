@@ -1,0 +1,282 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Entities &#8212; OR-Testbed 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Solvers" href="solvers.html" />
+    <link rel="prev" title="Tutorial" href="tutorial.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="entities">
+<span id="id1"></span><h1>Entities<a class="headerlink" href="#entities" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="instance">
+<h2>Instance<a class="headerlink" href="#instance" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-or_testbed.entities.instance"><span id="entities-instance"></span></span><dl class="class">
+<dt id="or_testbed.entities.instance.Instance">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.entities.instance.</code><code class="sig-name descname">Instance</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">data=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Instance objects hold information for concrete problem instances, like the input data.
+It also provides a basic loader from JSON coded input data.</p>
+<dl class="method">
+<dt id="or_testbed.entities.instance.Instance.from_file">
+<code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.from_file" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Basic data loader. It loads a json file and stores it in self.data attribute. For more complex loadings, overriding this method is recommended.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> – Path of the JSON file</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.instance.Instance.get_data">
+<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.get_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic getter for instance input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Instance input data, its concrete structure is up to the developer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.instance.Instance.set_data">
+<code class="sig-name descname">set_data</code><span class="sig-paren">(</span><em class="sig-param">in_data</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.set_data" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Basic setter for instance input data.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>in_data</strong> – Instance input data, its concrete structure is up to the developer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="solution">
+<h2>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-or_testbed.entities.solution"><span id="entities-solution"></span></span><dl class="class">
+<dt id="or_testbed.entities.solution.Solution">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.entities.solution.</code><code class="sig-name descname">Solution</code><span class="sig-paren">(</span><em class="sig-param">objective=0</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution" title="Permalink to this definition">¶</a></dt>
+<dd><p>Solution objects store the proper solution structure of the problem being solved. Also, some logic is implemented, like checking if the solution
+is feasible and calculating the objective value (usually the cost function).</p>
+<p>Two solutions can be compared in terms of their objective values with compare_to method.</p>
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.calculate_objective">
+<em class="property">abstract </em><code class="sig-name descname">calculate_objective</code><span class="sig-paren">(</span><em class="sig-param">in_instance</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.calculate_objective" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Calculates the objective value of a solution (usually a cost function), developer must override this method so it can fit the problem.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>in_instance</strong> – Problem instance with useful information.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Objective value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.compare_to">
+<code class="sig-name descname">compare_to</code><span class="sig-paren">(</span><em class="sig-param">in_solution</em>, <em class="sig-param">sense='MIN'</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.compare_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compares two solutions based on their objective values. This basic comparison supposes that the objective is a numeric value and a MINIMIZE type function.
+This method should be overriden if the objective is more complex than a single numeric value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>in_solution</strong> – Another solution to compare with self one.</p></li>
+<li><p><strong>sense</strong> – Indicates if we want to minimize (MIN) or maximize (MAX) the objective function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Positive number if ‘self’ solution is better (less cost if MIN, greater cost if MAX). Negative number is ‘self’ solution is worse (greater cost if MIN, less cost if MAX). Zero if both solutions are equal (equal cost).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.get_objective">
+<code class="sig-name descname">get_objective</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.get_objective" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Simple getter for the objective value of the solution.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Objective value</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.is_feasible">
+<em class="property">abstract </em><code class="sig-name descname">is_feasible</code><span class="sig-paren">(</span><em class="sig-param">in_instance</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.is_feasible" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Checks if a solution is feasible or not, developer must override this method so it can fit the problem.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>in_instance</strong> – Problem instance with useful information.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True if solutino is feasible, False if it doesn’t.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.set_objective">
+<code class="sig-name descname">set_objective</code><span class="sig-paren">(</span><em class="sig-param">in_objective</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.set_objective" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Simple setter for the objective value of the solution.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>in_objective</strong> – objective value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.to_dict">
+<code class="sig-name descname">to_dict</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Tries to convert a solution to a dictionary. In case of complex solutions this method should be overriden.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The solution structure as a python dict.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="or_testbed.entities.solution.Solution.to_json">
+<code class="sig-name descname">to_json</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.solution.Solution.to_json" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Tries to convert a solution to a JSON string. In case of complex solutions this method should be overriden.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The solution structure as a JSON string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">OR-Testbed</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Entities</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#instance">Instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#solution">Solution</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Solvers</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="factories.html">Factories</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorial.html" title="previous chapter">Tutorial</a></li>
+      <li>Next: <a href="solvers.html" title="next chapter">Solvers</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Diego Noceda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/entities.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

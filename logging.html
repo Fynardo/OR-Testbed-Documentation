@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Logging &#8212; OR-Testbed 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Factories" href="factories.html" />
+    <link rel="prev" title="Solvers" href="solvers.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="logging">
+<span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="module-or_testbed.utils.logger"></span><dl class="class">
+<dt id="or_testbed.utils.logger.Logger">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.utils.logger.</code><code class="sig-name descname">Logger</code><span class="sig-paren">(</span><em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger" title="Permalink to this definition">¶</a></dt>
+<dd><p>OR-Testbed logging utility.</p>
+<p>It lets the developer to create messages that can be printed to standard output (console) of stored into a file.</p>
+<dl class="method">
+<dt id="or_testbed.utils.logger.Logger.log">
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">strf</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger.log" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This method creates a message and, depending on attributes <code class="docutils literal notranslate"><span class="pre">debug</span></code> and <code class="docutils literal notranslate"><span class="pre">log_file</span></code> it prints or stores them (or both).</p>
+<p>It takes a string formated in Python <em>new style</em> and some arguments to create the message.
+For example:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">strf='Hello,</span> <span class="pre">{}'</span></code> and <code class="docutils literal notranslate"><span class="pre">*args</span> <span class="pre">=</span> <span class="pre">['World']</span></code> will make the message <code class="docutils literal notranslate"><span class="pre">'Hello,</span> <span class="pre">World'</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">strf='Hello,</span> <span class="pre">{name}'</span></code> and <code class="docutils literal notranslate"><span class="pre">**kwargs</span> <span class="pre">=</span> <span class="pre">{'name':</span> <span class="pre">'James'}</span></code> will make the message <code class="docutils literal notranslate"><span class="pre">'Hello,</span> <span class="pre">James'</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>strf</strong> – String with Python <em>new style</em> format.</p></li>
+<li><p><strong>args</strong> – Arguments to be referenced in positional format.</p></li>
+<li><p><strong>kwargs</strong> – Arguments to be referenced in key-value format.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">OR-Testbed</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="entities.html">Entities</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="solvers.html">Solvers</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logging</a></li>
+<li class="toctree-l1"><a class="reference internal" href="factories.html">Factories</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="solvers.html" title="previous chapter">Solvers</a></li>
+      <li>Next: <a href="factories.html" title="next chapter">Factories</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Diego Noceda.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/logging.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
