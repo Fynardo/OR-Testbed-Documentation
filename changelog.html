@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Factories &#8212; OR-Testbed 0.1.0 documentation</title>
+    <title>Change log &#8212; OR-Testbed 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -31,27 +31,31 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="factories">
-<span id="id1"></span><h1>Factories<a class="headerlink" href="#factories" title="Permalink to this headline">¶</a></h1>
-<span class="target" id="module-or_testbed.solvers.factory"></span><dl class="function">
-<dt id="or_testbed.solvers.factory.make_factory_from">
-<code class="sig-prename descclassname">or_testbed.solvers.factory.</code><code class="sig-name descname">make_factory_from</code><span class="sig-paren">(</span><em class="sig-param">cls</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.factory.make_factory_from" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This function creates a factory from a class reference (<code class="docutils literal notranslate"><span class="pre">cls</span></code>) and its arguments. It is then used by the solvers which need to be able to instantiate any object like solutions or even other solvers.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cls</strong> – Class Reference</p></li>
-<li><p><strong>kwargs</strong> – Arguments for the class.</p></li>
+  <div class="section" id="change-log">
+<span id="changelog"></span><h1>Change log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-1-0-0">
+<h2>Version 1.0.0<a class="headerlink" href="#version-1-0-0" title="Permalink to this headline">¶</a></h2>
+<p>Released in 13/9/2019.</p>
+<ul class="simple">
+<li><p>Added Tabu Search implementation</p></li>
+<li><p>Added Candidate entity to model trajectory solvers</p></li>
+<li><p>Added Move entity to model trajectory solvers</p></li>
+<li><p>Added neighborhood utilities to decouple solvers</p></li>
+<li><p>Solvers now don’t need any method overriding thanks to candidates and moves</p></li>
+<li><p>Added tests for solvers implemented using TSP example problem</p></li>
+<li><p>Moved factory logic to the classes that need it</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A function that, when executed, creates the object itself.</p>
-</dd>
-</dl>
-</dd></dl>
-
+</div>
+<div class="section" id="version-0-1-0">
+<h2>Version 0.1.0<a class="headerlink" href="#version-0-1-0" title="Permalink to this headline">¶</a></h2>
+<p>Released in 6/9/2019</p>
+<ul class="simple">
+<li><p>Initial structure for the project.</p></li>
+<li><p>Added base solver and multistart approach</p></li>
+<li><p>Added GRASP implementation</p></li>
+<li><p>Added Simulated Annealing implementation</p></li>
+</ul>
+</div>
 </div>
 
 
@@ -81,9 +85,15 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="solvers.html">Solvers</a></li>
 </ul>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Factories</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Change log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-1-0-0">Version 1.0.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-1-0">Version 0.1.0</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
@@ -124,7 +134,7 @@
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
-      <a href="_sources/factories.rst.txt"
+      <a href="_sources/changelog.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

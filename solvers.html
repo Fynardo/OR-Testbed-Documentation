@@ -54,10 +54,10 @@
 
 </div>
 <div class="section" id="grasp">
-<h2>Grasp<a class="headerlink" href="#grasp" title="Permalink to this headline">¶</a></h2>
+<h2>GRASP<a class="headerlink" href="#grasp" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="grasp-solver"></span><dl class="class">
 <dt id="or_testbed.solvers.grasp.GraspConstruct">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">GraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">solution_factory</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">GraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">solution_factory</em>, <em class="sig-param">grasp_move</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct" title="Permalink to this definition">¶</a></dt>
 <dd><p>GRASP constructive version.</p>
 <p>This class implements GRASP with parameter alpha, which handles the randomness related to the space exploration.</p>
 <p>To construct a solution, what it does is basically 4 steps:</p>
@@ -71,32 +71,6 @@
 <p>The core of the algorithm is implemented in this class, see <code class="docutils literal notranslate"><span class="pre">optimize</span></code> method.
 The developer needs to override the methods that handle the candidates and the greedy function, as that is what is needed to adapt GRASP to any problem.</p>
 <p>Check examples folder to see how to define and interact with GRASP.</p>
-<dl class="method">
-<dt id="or_testbed.solvers.grasp.GraspConstruct._add_candidate">
-<em class="property">abstract </em><code class="sig-name descname">_add_candidate</code><span class="sig-paren">(</span><em class="sig-param">candidate</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._add_candidate" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This method adds a candidate to the solution structure. Developer must override this method.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>candidate</strong> – Selected candidate to be added to the solution</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="or_testbed.solvers.grasp.GraspConstruct._are_candidates_left">
-<em class="property">abstract </em><code class="sig-name descname">_are_candidates_left</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._are_candidates_left" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This method checks if there are more candidates remaining that need to be added to the solution. Developer must override this method.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>True if there are candidates left, False otherwise</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="method">
 <dt id="or_testbed.solvers.grasp.GraspConstruct._filter_candidate_list">
 <code class="sig-name descname">_filter_candidate_list</code><span class="sig-paren">(</span><em class="sig-param">candidates</em>, <em class="sig-param">costs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._filter_candidate_list" title="Permalink to this definition">¶</a></dt>
@@ -127,59 +101,14 @@ The developer needs to override the methods that handle the candidates and the g
 </dd></dl>
 
 <dl class="method">
-<dt id="or_testbed.solvers.grasp.GraspConstruct._greedy_function">
-<em class="property">abstract </em><code class="sig-name descname">_greedy_function</code><span class="sig-paren">(</span><em class="sig-param">candidate</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._greedy_function" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This method calculates greedy function value of a candidate. Developer must override this method.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>candidate</strong> – A candidate to calculate greedy function.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Greedy function cost of the candidate.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="or_testbed.solvers.grasp.GraspConstruct._make_candidates_list">
-<em class="property">abstract </em><code class="sig-name descname">_make_candidates_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._make_candidates_list" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This method calculates the list of remaining candidates that need to be added to the solution. Developer must override this method.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A remaining candidates list.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
 <dt id="or_testbed.solvers.grasp.GraspConstruct._make_rcl">
-<code class="sig-name descname">_make_rcl</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._make_rcl" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_make_rcl</code><span class="sig-paren">(</span><em class="sig-param">candidates</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._make_rcl" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>This method creates the Restricted Candidates List (RCL). It gets all the candidates, calculate thier costs and filter them according to parameter alpha.</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Calculated RCL</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="or_testbed.solvers.grasp.GraspConstruct._select_candidate">
-<code class="sig-name descname">_select_candidate</code><span class="sig-paren">(</span><em class="sig-param">rcl</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct._select_candidate" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Selects next candidate to add to the solution from the RCL. It just selects a random candidate by default.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>rcl</strong> – Restricted Candidates List</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Selected candidate from RCL</p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,14 +138,14 @@ Then, the new solution is compared to the last one, if it is an improvement, new
 <p>Check examples folder to see how to define and interact with simulated annealing.</p>
 <dl class="method">
 <dt id="or_testbed.solvers.simanneal.SimAnneal._make_move">
-<code class="sig-name descname">_make_move</code><span class="sig-paren">(</span><em class="sig-param">new_mov_factory</em>, <em class="sig-param">in_solution</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.simanneal.SimAnneal._make_move" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">_make_move</code><span class="sig-paren">(</span><em class="sig-param">next_mov</em>, <em class="sig-param">candidate</em>, <em class="sig-param">in_solution</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.simanneal.SimAnneal._make_move" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>Executes a certain move, thus calculating a new neighbour solution.</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>new_mov_factory</strong> – A movement factory that the algorithm instantiates and executes.</p></li>
+<li><p><strong>next_mov</strong> – A movement factory that the algorithm instantiates and executes.</p></li>
 <li><p><strong>in_solution</strong> – The solution to make the move to and calculate a new neighbor.</p></li>
 </ul>
 </dd>
@@ -245,6 +174,30 @@ Then, the new solution is compared to the last one, if it is an improvement, new
 <dt id="or_testbed.solvers.simanneal.MultiStartSimAnneal">
 <em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.simanneal.</code><code class="sig-name descname">MultiStartSimAnneal</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_simanneal_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.simanneal.MultiStartSimAnneal" title="Permalink to this definition">¶</a></dt>
 <dd><p>MultiStart version of Simulated Annealing.</p>
+<p>This is just an extension of base multistart solver. It works fine out of the box.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="tabu-search">
+<h2>Tabu Search<a class="headerlink" href="#tabu-search" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="id3"></span><dl class="class">
+<dt id="or_testbed.solvers.tabusearch.TabuSearch">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">TabuSearch</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">initial_solution</em>, <em class="sig-param">available_movs</em>, <em class="sig-param">movs_weight</em>, <em class="sig-param">tabulen=10</em>, <em class="sig-param">iters=10</em>, <em class="sig-param">candidate_selection='first'</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.TabuSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Tabu Search (TS) implementation.</p>
+<p>Based on Glover work, this solver takes an initial solution and tries to improve it. It cannot create a new solution.</p>
+<p>Basically, tabu search explores the solution space the same way as other trajectory solvers. It  defines the space solution in terms of a neighborhood,
+and explores modifying small parts of a solution.</p>
+<p>The main feature of TS is that, in order to avoid getting stuck, it uses a list where recent neighbors are stored, so it does not run in circles over the same
+solutions over and over again.</p>
+<p>When a candidate is accepted, it is added to the tabu list, sometimes, if no good solution is found, a bad solution can be taken to continue the exploration.
+When the tabu list is full, elements get discarded in favor of new ones.</p>
+<p>Check examples folder to see how to define and interact with tabu search.</p>
+</dd></dl>
+
+<dl class="class">
+<dt id="or_testbed.solvers.tabusearch.MultiStartTabuSearch">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">MultiStartTabuSearch</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_simanneal_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.MultiStartTabuSearch" title="Permalink to this definition">¶</a></dt>
+<dd><p>MultiStart version of Tabu Search.</p>
 <p>This is just an extension of base multistart solver. It works fine out of the box.</p>
 </dd></dl>
 
@@ -278,14 +231,17 @@ Then, the new solution is compared to the last one, if it is an improvement, new
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Solvers</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#base-solvers">Base Solvers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#grasp">Grasp</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#grasp">GRASP</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#simulated-annealing">Simulated Annealing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tabu-search">Tabu Search</a></li>
 </ul>
 </li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="factories.html">Factories</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
 </ul>
 
 <div class="relations">

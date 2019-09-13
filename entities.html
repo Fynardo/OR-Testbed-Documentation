@@ -42,6 +42,19 @@
 <dd><p>Instance objects hold information for concrete problem instances, like the input data.
 It also provides a basic loader from JSON coded input data.</p>
 <dl class="method">
+<dt id="or_testbed.entities.instance.Instance.data">
+<em class="property">property </em><code class="sig-name descname">data</code><a class="headerlink" href="#or_testbed.entities.instance.Instance.data" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Basic getter for instance input data</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Instance input data, its concrete structure is up to the developer.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="or_testbed.entities.instance.Instance.from_file">
 <code class="sig-name descname">from_file</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.from_file" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
@@ -55,25 +68,12 @@ It also provides a basic loader from JSON coded input data.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="or_testbed.entities.instance.Instance.get_data">
-<code class="sig-name descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.get_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Basic getter for instance input data</p>
+<dt id="or_testbed.entities.instance.Instance.name">
+<em class="property">property </em><code class="sig-name descname">name</code><a class="headerlink" href="#or_testbed.entities.instance.Instance.name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Basic getter for instance name</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>Instance input data, its concrete structure is up to the developer.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="or_testbed.entities.instance.Instance.set_data">
-<code class="sig-name descname">set_data</code><span class="sig-paren">(</span><em class="sig-param">in_data</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.instance.Instance.set_data" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>Basic setter for instance input data.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>in_data</strong> – Instance input data, its concrete structure is up to the developer.</p>
+<dd class="field-odd"><p>Instance name</p>
 </dd>
 </dl>
 </dd></dl>
@@ -194,6 +194,52 @@ This method should be overriden if the objective is more complex than a single n
 </dd></dl>
 
 </div>
+<div class="section" id="candidate">
+<h2>Candidate<a class="headerlink" href="#candidate" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-or_testbed.entities.candidate"><span id="entities-candidate"></span></span><p>Candidate implementation for OR-Testbed.</p>
+<dl class="class">
+<dt id="or_testbed.entities.candidate.Candidate">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.entities.candidate.</code><code class="sig-name descname">Candidate</code><a class="headerlink" href="#or_testbed.entities.candidate.Candidate" title="Permalink to this definition">¶</a></dt>
+<dd><p>in OR-Testbed a candidate is used to model potential moves in trajectory solvers, such as simulated annealing or tabu search.
+Concrete attributes of a candidate depend on the problem being solved.</p>
+<dl class="method">
+<dt id="or_testbed.entities.candidate.Candidate.fitness">
+<em class="property">abstract </em><code class="sig-name descname">fitness</code><span class="sig-paren">(</span><em class="sig-param">solution</em>, <em class="sig-param">instance</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.entities.candidate.Candidate.fitness" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Fitness function of a candidate. Usually this means the improvement of selecting this candidate to the actual solution.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solution</strong> – Actual solution that the candidate will modify.</p></li>
+<li><p><strong>instance</strong> – Instance being solved, may be needed to check special requirements or data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Fitness of the candidate, usually a numeric value.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="neighborhood">
+<h2>Neighborhood<a class="headerlink" href="#neighborhood" title="Permalink to this headline">¶</a></h2>
+<span class="target" id="module-or_testbed.entities.neighborhood"><span id="entities-neighborhood"></span></span><p>This module implements utilities to deal with neighborhoods in OR-Testbed.</p>
+<p>Usually, in terms of combinatorial optimization, given a solution <code class="docutils literal notranslate"><span class="pre">s</span></code>, a neighborhood of <code class="docutils literal notranslate"><span class="pre">s</span></code> is the set of solutions close to <code class="docutils literal notranslate"><span class="pre">s</span></code> (called candidates).
+Two solutions <code class="docutils literal notranslate"><span class="pre">s</span></code> an <code class="docutils literal notranslate"><span class="pre">s'</span></code> are close if there’s a movement that, applied to <code class="docutils literal notranslate"><span class="pre">s</span></code>, gives <code class="docutils literal notranslate"><span class="pre">s'</span></code>. The movement itself depends on the problem, but examples are swapping cities
+in TSP, removing or adding items in knapsack, etc.</p>
+<dl class="simple">
+<dt>When selecting a candidate of a neighborhood, multiple strategies may be used:</dt><dd><ul class="simple">
+<li><p>Random. Just select one random candidate from neighborhood</p></li>
+<li><p>First improving. Iterate through all candidates in neighborhood and select the first candidate that improves the actual solution.</p></li>
+<li><p>Best. Get the best candidate in the neighborhood. Even though this one seems the optimal, it needs to compute the cost of every candidate, which may be a problem in large neighborhoods.</p></li>
+<li><p>Aspiration Plus. Iterate through all candidates, selecting the one that gives the best result but assuring that a minimum of candidates will be examined.</p></li>
+</ul>
+</dd>
+</dl>
+</div>
 </div>
 
 
@@ -221,6 +267,8 @@ This method should be overriden if the objective is more complex than a single n
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Entities</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#instance">Instance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#solution">Solution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#candidate">Candidate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#neighborhood">Neighborhood</a></li>
 </ul>
 </li>
 </ul>
@@ -229,7 +277,9 @@ This method should be overriden if the objective is more complex than a single n
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="factories.html">Factories</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Change log</a></li>
 </ul>
 
 <div class="relations">

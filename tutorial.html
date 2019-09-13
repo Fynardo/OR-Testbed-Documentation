@@ -65,10 +65,10 @@ between them. We want to give our salesman a sequence of cities he must visit th
 <p>1. An <strong>Instance</strong>. Instance objects store input data and some logic, for example is their responsibility to know how to check the feasibility
 of a solution and calculating its objective. In TSP, instances will have information about cities and distances.</p>
 <p>2. A <strong>Solution</strong>. Solution objects store the obtained solution for some problem, its internal structure depends on the problem itself,
-but all solutions in OR-Testbed share share a value called <strong>objective</strong>, that representes the quality of the solution. In TSP this objective
+but all solutions in OR-Testbed share share a value called <strong>objective</strong>, that represents the quality of the solution. In TSP this objective
 is the cost of the calculated trip.</p>
 <p>3. A <strong>Solver</strong>. The solver is the one that does the work, this is, the algorithm itself. Each solver implements one metaheuristic or a variation of
-a metaheuristic. In TSP, we will need to implement some methods of the solvers in order to adapt their logic to TSP.</p>
+a metaheuristic. In TSP, we will need to implement some methods related to the solvers in order to adapt their logic to TSP.</p>
 </div>
 <div class="section" id="defining-an-instance">
 <h3>Defining an instance<a class="headerlink" href="#defining-an-instance" title="Permalink to this headline">¶</a></h3>
@@ -150,61 +150,47 @@ of al possible candidates, this is what alpha does with the following equation:<
 <p>Where <strong>c(e)</strong> is the cost of candidate <strong>e</strong> (based on the greedy function), <strong>c_min</strong> and <strong>c_max</strong> are the minimum and maximum costs of the remaining candidates, respectively.</p>
 <p>What this means is that when alpha is 0 only candidates with minimum cost are taken into account (pure greedy approach). On the other hand, when
 alpha is 1 all candidates are taken into account (pure randomness approach). What alpha does is to set the confidence we have in our greedy function.</p>
-<p>Anyhow, to solve a problem like TSP we must implement some logic (like the greedy function). Basically we need to override the methods
-that are not part of the core of GRASP (this happens with every metaheuristic in OR-Testbed). In this case, we must override
-<code class="docutils literal notranslate"><span class="pre">initialize_solution</span></code> (though if you don’t need to initialize anything you may pass), <code class="docutils literal notranslate"><span class="pre">greedy_function</span></code>, <code class="docutils literal notranslate"><span class="pre">make_candidates_list</span></code>,
-<code class="docutils literal notranslate"><span class="pre">add_candidate</span></code> and <code class="docutils literal notranslate"><span class="pre">are_candidates_left</span></code>. The code needed to implement GRASP for creating a solution for our TSP is the following</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">or_testbed.solvers.grasp</span> <span class="kn">as</span> <span class="nn">base_grasp</span>
+<p>Anyhow, to solve our TSP problem we must implement some other logic. GRASP workflow (as lots of other metaheuristics) is about selecting candidates and making small changes
+to solutions in the best trajectory as possible. In OR-Testbed we implement this logic within two entities: candidates and movements.</p>
+<p>Lets start with movements. As stated earlier, multiple metaheuristics work by exploring neighborhoods and trying to find paths that eventually may guide them to good solutions.
+This neighborhoods are defined by the moves. For example, in GRASP our only move is to add cities to the sequence until all cities are covered.
+The neighborhood (the set of candidates to take into account) related to that move are the cities left to be added to the sequence.</p>
+<p>Lets see an example, this could be the GRASP move and candidate definition for TSP:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">TSPGraspCandidate</span><span class="p">(</span><span class="n">base_candidate</span><span class="o">.</span><span class="n">Candidate</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">city</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="n">city</span>
 
+    <span class="k">def</span> <span class="nf">fitness</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">solution</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="n">last_visited</span> <span class="o">=</span> <span class="n">solution</span><span class="o">.</span><span class="n">cities</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">last_visited</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">]</span>
 
-<span class="k">class</span> <span class="nc">TSPGrasp</span><span class="p">(</span><span class="n">base_grasp</span><span class="o">.</span><span class="n">GraspConstruct</span><span class="p">):</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instance</span><span class="p">,</span> <span class="n">solution_factory</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="n">solution_factory</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">debug</span><span class="p">,</span> <span class="n">log_file</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">remaining</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_visited</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initial_city</span>
+<span class="k">class</span> <span class="nc">TSPGraspMove</span><span class="p">(</span><span class="n">base_move</span><span class="o">.</span><span class="n">Move</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">make_neighborhood</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">instance</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">TSPGraspCandidate</span><span class="p">(</span><span class="n">city</span><span class="o">=</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">solution</span><span class="o">.</span><span class="n">cities</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">solution</span><span class="o">.</span><span class="n">cities</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">_initialize_solution</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initial_city</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">remaining</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">initial_city</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_greedy_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">last_visited</span><span class="p">][</span><span class="n">candidate</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="nf">_are_candidates_left</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">remaining</span> <span class="k">else</span> <span class="bp">False</span>
-
-    <span class="k">def</span> <span class="nf">_add_candidate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">candidate</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">last_visited</span> <span class="o">=</span> <span class="n">candidate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">remaining</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">candidate</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_make_candidates_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">instance</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">last_visited</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">visited</span><span class="p">]</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="n">in_candidate</span><span class="p">,</span> <span class="n">in_solution</span><span class="p">):</span>
+        <span class="n">in_solution</span><span class="o">.</span><span class="n">cities</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">in_candidate</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">in_solution</span>
 </pre></div>
 </div>
-<p>At solver initialization, we set some helpful values like visited cities and remaining cities. Note that solvers have access to instance and solution objects.</p>
-<p>Initializing the solution is not always needed, but makes sense in this one. The greedy function can be an extremely complicated one, in our case,
-is a very naive function, it just takes the distance between the last visited solution and the candidate.
-The other three functions are related to the candidates list, first to check if there are candidates left we just check it there’s some city
-remaining to be visited. To add a candidate we append the candidate to the solution cities sequence and update our values accordingly. Last, to make
-the candidates list we take into account all cities not visited (the remaining ones).</p>
-<p>Note that all methods are seen as private (that’s why their name start with an underscore <code class="docutils literal notranslate"><span class="pre">_</span></code>), this means that the solver will call the appropriate methods when needed.</p>
+<p>Candidates store internal structure and the fitness function, which is the cost of adding the candidate city as the next step on our sequence.
+On the other hand, neighborhoods are just a candidates list, in this case, made by the cities not added yet to the solution.
+To apply this move, we just append the candidate to the solution.</p>
 </div>
 <div class="section" id="executing-our-solver">
 <h3>Executing our solver<a class="headerlink" href="#executing-our-solver" title="Permalink to this headline">¶</a></h3>
-<p>All the three needed components are implemented now (solution, instance and solver), that means that there’s only one more step, executing it all.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">or_testbed.solvers.factory</span> <span class="kn">import</span> <span class="n">make_factory_from</span>
-
+<p>All the needed components are implemented now, that means that there’s only one more step, executing it all.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">or_testbed.solvers.grasp</span> <span class="kn">as</span> <span class="nn">base_grasp</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="c1"># Instantiate instance</span>
     <span class="n">my_tsp</span> <span class="o">=</span> <span class="n">TSPInstance</span><span class="p">(</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">cities</span><span class="p">)</span>
     <span class="c1"># Create factory from solution</span>
-    <span class="n">tsp_solution_factory</span> <span class="o">=</span> <span class="n">make_factory_from</span><span class="p">(</span><span class="n">TSPSolution</span><span class="p">,</span> <span class="n">initial_city</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
-    <span class="c1"># Instantiate GRASP solver (with parameter alpha = 0.0, greedy approach)</span>
-    <span class="n">tsp_solver</span> <span class="o">=</span> <span class="n">TSPGrasp</span><span class="p">(</span><span class="n">my_tsp</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">tsp_solution_factory</span> <span class="o">=</span> <span class="n">TSPSolution</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">initial_city</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="c1"># Instantiate GRASP solver (with parameter alpha = 0.0, greedy approach) passing our move.</span>
+    <span class="n">tsp_solver</span> <span class="o">=</span> <span class="n">base_grasp</span><span class="o">.</span><span class="n">GraspConstruct</span><span class="p">(</span><span class="n">tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">grasp_move</span><span class="o">=</span><span class="n">TSPGraspMove</span><span class="p">)</span>
     <span class="c1"># Run the solver</span>
     <span class="n">feasible</span><span class="p">,</span> <span class="n">solution</span> <span class="o">=</span> <span class="n">tsp_solver</span><span class="o">.</span><span class="n">solve</span><span class="p">()</span>
     <span class="c1"># Retrieve the cities sequence and the objective value (the cost of the trip)</span>
@@ -217,34 +203,14 @@ the solution found. In fact, a tuple is returned, first element (<code class="do
 second element is the solution itself.
 Note that the solution is not instantiated directly, what we do is to create a factory around it, but its the same syntax.
 What this means is that solvers usually need to be able to create new solutions, so we want to give them a way to do so, thats what
-<code class="docutils literal notranslate"><span class="pre">make_factory_from</span></code> does. The function signature is:</p>
-<dl class="function">
-<dt id="or_testbed.solvers.factory.make_factory_from">
-<code class="sig-prename descclassname">or_testbed.solvers.factory.</code><code class="sig-name descname">make_factory_from</code><span class="sig-paren">(</span><em class="sig-param">cls</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.factory.make_factory_from" title="Permalink to this definition">¶</a></dt>
-<dd><blockquote>
-<div><p>This function creates a factory from a class reference (<code class="docutils literal notranslate"><span class="pre">cls</span></code>) and its arguments. It is then used by the solvers which need to be able to instantiate any object like solutions or even other solvers.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cls</strong> – Class Reference</p></li>
-<li><p><strong>kwargs</strong> – Arguments for the class.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A function that, when executed, creates the object itself.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<p>So, basically it expects a class reference (<code class="docutils literal notranslate"><span class="pre">cls</span></code>) and the arguments to instantiate that class, in the same way as a normal instantiation.</p>
-<p>Once executed we will get a solution for our problem in basically no time, thats fine, but the solution is easily improvable.</p>
+<code class="docutils literal notranslate"><span class="pre">factory</span></code> class method does.</p>
+<p>Once executed we will get a solution for our problem, an easily improvable one to be fair.</p>
 </div>
-<div class="section" id="improving-our-solver">
-<h3>Improving our solver<a class="headerlink" href="#improving-our-solver" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="improving-our-solution">
+<h3>Improving our solution<a class="headerlink" href="#improving-our-solution" title="Permalink to this headline">¶</a></h3>
 <p>In our previous example, we solved the problem with alpha being 0.0, this means that there is no randomness, so the greedy function will rule it all.
 We could set another value to alpha (like 0.3) so the solver would be able to explore more solutions. That’s a fine approximation, but with
-randomness involved we usually want to try and stabilize our solutions. This is where <strong>multistart</strong> comes in, this technique lets us run
+randomness involved we usually want to try and stabilize our solutions. This is where <strong>multistart</strong> techniques come in, this lets us run
 our solvers a number of times and get the best result.</p>
 <p>Lets see how we do it with OR-Testbed:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">or_testbed.solvers.grasp</span> <span class="kn">as</span> <span class="nn">base_grasp</span>
@@ -253,9 +219,9 @@ our solvers a number of times and get the best result.</p>
     <span class="c1"># Instantiate instance</span>
     <span class="n">my_tsp</span> <span class="o">=</span> <span class="n">TSPInstance</span><span class="p">(</span><span class="n">instance_name</span><span class="p">,</span> <span class="n">cities</span><span class="p">)</span>
     <span class="c1"># Make a solution factory as before</span>
-    <span class="n">tsp_solution_factory</span> <span class="o">=</span> <span class="n">make_factory_from</span><span class="p">(</span><span class="n">TSPSolution</span><span class="p">,</span> <span class="n">initial_city</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+    <span class="n">tsp_solution_factory</span> <span class="o">=</span> <span class="n">TSPSolution</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">initial_city</span><span class="o">=</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
     <span class="c1"># Since we want to execute multiple GRASP instances, we also make a factory from it</span>
-    <span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">make_factory_from</span><span class="p">(</span><span class="n">TSPGrasp</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">my_tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">)</span>
+    <span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">base_grasp</span><span class="o">.</span><span class="n">GraspConstruct</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">grasp_move</span><span class="o">=</span><span class="n">TSPGraspMove</span><span class="p">)</span>
     <span class="c1"># Instantiate our multistart version of GRASP with 25 iterations</span>
     <span class="n">tsp_multistart</span> <span class="o">=</span> <span class="n">base_grasp</span><span class="o">.</span><span class="n">MultiStartGraspConstruct</span><span class="p">(</span><span class="n">iters</span><span class="o">=</span><span class="mi">25</span><span class="p">,</span> <span class="n">inner_grasp_factory</span><span class="o">=</span><span class="n">tsp_grasp_factory</span><span class="p">)</span>
     <span class="c1"># Run the solver</span>
@@ -265,7 +231,7 @@ our solvers a number of times and get the best result.</p>
     <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Total cost: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ms_solution</span><span class="o">.</span><span class="n">get_objective</span><span class="p">()))</span>
 </pre></div>
 </div>
-<p>Running a multistart solver is almost the same as running the proper solver, the main difference is that now, for the <em>inner solver</em> (TSPGrasp)
+<p>Running a multistart solver is almost the same as running the proper solver, the main difference is that now, for the <em>inner solver</em> (GRASP)
 we don’t want an instance, we need a factory, because the multistart solver is going to instantiate it many times. The good thing is that
 our solution now is better (the optimal one in fact).</p>
 <p>Note that we don’t need to implement anything within <code class="docutils literal notranslate"><span class="pre">MultiStartGraspConstruct</span></code>, since it’s a direct extension from the base multistart solver.</p>
@@ -277,13 +243,13 @@ our solution now is better (the optimal one in fact).</p>
 OR-Testbed includes a logging utility that lets the developer show or hide information (or send it to a log file).</p>
 <p>For example, in our multistart GRASP example, we may want to only see the output of the multistart solver, not the inner one.
 We can set that with:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">make_factory_from</span><span class="p">(</span><span class="n">TSPGrasp</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">my_tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">base_grasp</span><span class="o">.</span><span class="n">GraspConstruct</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">grasp_move</span><span class="o">=</span><span class="n">TSPGraspMove</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That’s the same line from the example but with the parameter <strong>debug</strong> set to <code class="docutils literal notranslate"><span class="pre">False</span></code>, that prevents any output to be printed.
 Note that we can set debug parameter to <code class="docutils literal notranslate"><span class="pre">True</span></code> or <code class="docutils literal notranslate"><span class="pre">False</span></code> to any solver.</p>
 <p>Of course we may not want to see the output but to store it to check later, we can do that setting the <code class="docutils literal notranslate"><span class="pre">log_file</span></code> parameter, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">make_factory_from</span><span class="p">(</span><span class="n">TSPGrasp</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="n">my_tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="s1">&#39;log.txt&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">tsp_grasp_factory</span> <span class="o">=</span> <span class="n">base_grasp</span><span class="o">.</span><span class="n">GraspConstruct</span><span class="o">.</span><span class="n">factory</span><span class="p">(</span><span class="n">instance</span><span class="o">=</span><span class="n">tsp</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">solution_factory</span><span class="o">=</span><span class="n">tsp_solution_factory</span><span class="p">,</span> <span class="n">grasp_move</span><span class="o">=</span><span class="n">TSPGraspMove</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">log_file</span><span class="o">=</span><span class="s1">&#39;log.txt&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>That will not print the output but store it to a text file called <em>log.txt</em>.</p>
@@ -329,7 +295,6 @@ folder on Github repo.</p>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="logging.html">Logging</a></li>
-<li class="toctree-l1"><a class="reference internal" href="factories.html">Factories</a></li>
 </ul>
 
 <div class="relations">
