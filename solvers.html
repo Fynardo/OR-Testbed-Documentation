@@ -38,7 +38,7 @@
 <h2>Base Solvers<a class="headerlink" href="#base-solvers" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="id2"></span><dl class="class">
 <dt id="or_testbed.solvers.base.solver.Solver">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.base.solver.</code><code class="sig-name descname">Solver</code><span class="sig-paren">(</span><em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.base.solver.Solver" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.base.solver.</code><code class="sig-name descname">Solver</code><span class="sig-paren">(</span><em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.base.solver.Solver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base solver class.</p>
 <p>Every solver in OR-Testbed extends this class. What is important is that it implements the <code class="docutils literal notranslate"><span class="pre">solve</span></code> method, which actually runs the solver.</p>
 <p>To add new solvers, <code class="docutils literal notranslate"><span class="pre">optimize</span></code> method must be overriden, there’s where all the solver logic lives.</p>
@@ -46,7 +46,7 @@
 
 <dl class="class">
 <dt id="or_testbed.solvers.base.solver.MultiStartSolver">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.base.solver.</code><code class="sig-name descname">MultiStartSolver</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_solver_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.base.solver.MultiStartSolver" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.base.solver.</code><code class="sig-name descname">MultiStartSolver</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_solver_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.base.solver.MultiStartSolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Base multistart solver class.</p>
 <p>Every multistart solver in OR-Testbed extend this class, but just for commodity purposes, since this class works just fine by itself.</p>
 <p>It just executes a solver any given amount of times (<code class="docutils literal notranslate"><span class="pre">iters</span></code> parameter) and returns the best result achieved.</p>
@@ -57,7 +57,7 @@
 <h2>GRASP<a class="headerlink" href="#grasp" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="grasp-solver"></span><dl class="class">
 <dt id="or_testbed.solvers.grasp.GraspConstruct">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">GraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">solution_factory</em>, <em class="sig-param">grasp_move</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">GraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">solution_factory</em>, <em class="sig-param">grasp_move</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.GraspConstruct" title="Permalink to this definition">¶</a></dt>
 <dd><p>GRASP constructive version.</p>
 <p>This class implements GRASP with parameter alpha, which handles the randomness related to the space exploration.</p>
 <p>To construct a solution, what it does is basically 4 steps:</p>
@@ -117,7 +117,7 @@ The developer needs to override the methods that handle the candidates and the g
 
 <dl class="class">
 <dt id="or_testbed.solvers.grasp.MultiStartGraspConstruct">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">MultiStartGraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_grasp_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.MultiStartGraspConstruct" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.grasp.</code><code class="sig-name descname">MultiStartGraspConstruct</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_grasp_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.grasp.MultiStartGraspConstruct" title="Permalink to this definition">¶</a></dt>
 <dd><p>MultiStart version of GRASP constructive.</p>
 <p>This is just an extension of base multistart solver. It works fine out of the box.</p>
 </dd></dl>
@@ -127,7 +127,7 @@ The developer needs to override the methods that handle the candidates and the g
 <h2>Simulated Annealing<a class="headerlink" href="#simulated-annealing" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="simanneal-solver"></span><dl class="class">
 <dt id="or_testbed.solvers.simanneal.SimAnneal">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.simanneal.</code><code class="sig-name descname">SimAnneal</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">initial_solution</em>, <em class="sig-param">available_movs</em>, <em class="sig-param">movs_weight</em>, <em class="sig-param">max_temp</em>, <em class="sig-param">min_temp</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.simanneal.SimAnneal" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.simanneal.</code><code class="sig-name descname">SimAnneal</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">initial_solution</em>, <em class="sig-param">available_movs</em>, <em class="sig-param">movs_weight</em>, <em class="sig-param">max_temp</em>, <em class="sig-param">min_temp</em>, <em class="sig-param">alpha</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.simanneal.SimAnneal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simulated Annealing implementation.</p>
 <p>Based on Kirkpatricks work, this solver takes an initial solution and tries to improve it. It cannot create a new solution.</p>
 <p>Basically, simulated annealing uses an inspiration between the annealing process in metals and some topics in combinatorial optimization.
@@ -182,7 +182,7 @@ Then, the new solution is compared to the last one, if it is an improvement, new
 <h2>Tabu Search<a class="headerlink" href="#tabu-search" title="Permalink to this headline">¶</a></h2>
 <span class="target" id="id3"></span><dl class="class">
 <dt id="or_testbed.solvers.tabusearch.TabuSearch">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">TabuSearch</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">initial_solution</em>, <em class="sig-param">available_movs</em>, <em class="sig-param">movs_weight</em>, <em class="sig-param">tabulen=10</em>, <em class="sig-param">iters=10</em>, <em class="sig-param">candidate_selection='first'</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.TabuSearch" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">TabuSearch</code><span class="sig-paren">(</span><em class="sig-param">instance</em>, <em class="sig-param">initial_solution</em>, <em class="sig-param">available_movs</em>, <em class="sig-param">movs_weight</em>, <em class="sig-param">tabulen=10</em>, <em class="sig-param">iters=10</em>, <em class="sig-param">candidate_selection='first'</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.TabuSearch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Tabu Search (TS) implementation.</p>
 <p>Based on Glover work, this solver takes an initial solution and tries to improve it. It cannot create a new solution.</p>
 <p>Basically, tabu search explores the solution space the same way as other trajectory solvers. It  defines the space solution in terms of a neighborhood,
@@ -196,7 +196,7 @@ When the tabu list is full, elements get discarded in favor of new ones.</p>
 
 <dl class="class">
 <dt id="or_testbed.solvers.tabusearch.MultiStartTabuSearch">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">MultiStartTabuSearch</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_simanneal_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.MultiStartTabuSearch" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.solvers.tabusearch.</code><code class="sig-name descname">MultiStartTabuSearch</code><span class="sig-paren">(</span><em class="sig-param">iters</em>, <em class="sig-param">inner_tabusearch_factory</em>, <em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.solvers.tabusearch.MultiStartTabuSearch" title="Permalink to this definition">¶</a></dt>
 <dd><p>MultiStart version of Tabu Search.</p>
 <p>This is just an extension of base multistart solver. It works fine out of the box.</p>
 </dd></dl>

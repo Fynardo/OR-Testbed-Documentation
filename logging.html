@@ -35,13 +35,19 @@
   <div class="section" id="logging">
 <span id="id1"></span><h1>Logging<a class="headerlink" href="#logging" title="Permalink to this headline">¶</a></h1>
 <span class="target" id="module-or_testbed.utils.logger"></span><dl class="class">
+<dt id="or_testbed.utils.logger.LogLevel">
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.utils.logger.</code><code class="sig-name descname">LogLevel</code><a class="headerlink" href="#or_testbed.utils.logger.LogLevel" title="Permalink to this definition">¶</a></dt>
+<dd><p>An enumeration.</p>
+</dd></dl>
+
+<dl class="class">
 <dt id="or_testbed.utils.logger.Logger">
-<em class="property">class </em><code class="sig-prename descclassname">or_testbed.utils.logger.</code><code class="sig-name descname">Logger</code><span class="sig-paren">(</span><em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">or_testbed.utils.logger.</code><code class="sig-name descname">Logger</code><span class="sig-paren">(</span><em class="sig-param">debug=True</em>, <em class="sig-param">log_file=None</em>, <em class="sig-param">log_level=&lt;LogLevel.ALL: 4&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger" title="Permalink to this definition">¶</a></dt>
 <dd><p>OR-Testbed logging utility.</p>
 <p>It lets the developer to create messages that can be printed to standard output (console) of stored into a file.</p>
 <dl class="method">
 <dt id="or_testbed.utils.logger.Logger.log">
-<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">strf</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger.log" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">log</code><span class="sig-paren">(</span><em class="sig-param">level</em>, <em class="sig-param">strf</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#or_testbed.utils.logger.Logger.log" title="Permalink to this definition">¶</a></dt>
 <dd><blockquote>
 <div><p>This method creates a message and, depending on attributes <code class="docutils literal notranslate"><span class="pre">debug</span></code> and <code class="docutils literal notranslate"><span class="pre">log_file</span></code> it prints or stores them (or both).</p>
 <p>It takes a string formated in Python <em>new style</em> and some arguments to create the message.
@@ -54,6 +60,7 @@ For example:</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – Level of message.</p></li>
 <li><p><strong>strf</strong> – String with Python <em>new style</em> format.</p></li>
 <li><p><strong>args</strong> – Arguments to be referenced in positional format.</p></li>
 <li><p><strong>kwargs</strong> – Arguments to be referenced in key-value format.</p></li>
